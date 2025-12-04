@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moritz Mack | PHP & Laravel Entwickler</title>
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="blob"></div>
+
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="#top" class="logo">Moritz Mack</a>
+
+            <div class="burger-menu" id="burger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#about">Über mich</a></li>
+                <li><a href="#skills">Fokus & Skills</a></li>
+                <li><a href="#projects">Projekte</a></li>
+                <li><a href="#experience">Erfahrung</a></li>
+                <li><a href="#contact">Kontakt</a></li>
+            </ul>
+
+            <a href="Lebenslauf.pdf" class="btn btn-primary small desktop-only" target="_blank">
+                Lebenslauf herunterladen
+            </a>
+        </div>
+    </nav>
+
+    <header class="hero" id="top">
+        <div class="container hero-content">
+
+            <div class="hero-text">
+                <span class="badge">PHP / Laravel Fullstack Developer</span>
+                <h1>Entwicklung performanter Webanwendungen & Automatisierung</h1>
+
+                <p class="subline">
+                    Ich entwickle Webanwendungen mit Laravel, SQL und modernen Frontend-Tools.
+                    Durch meinen Mechatronik-Background denke ich in zusammenhängenden Systemen statt in einzelnen Funktionen.
+                    So entstehen Lösungen, die stabil laufen und echte Prozesse verbessern.
+                </p>
+
+                <div class="hero-facts">
+                    <span>📍 Engelsbrand / Raum Pforzheim</span>
+                    <span>💻 Fokus: Webapps, interne Tools, AI</span>
+                </div>
+
+                <div class="cta-group">
+                    <a href="#projects" class="btn btn-primary">Projekte ansehen</a>
+                    <a href="Lebenslauf.pdf" class="btn btn-outline" target="_blank">Lebenslauf herunterladen</a>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <img src="img/moritz-cover.png" alt="Porträt von Moritz Mack">
+            </div>
+
+        </div>
+    </header>
+
+    <section id="about" class="section-light">
+        <div class="container about-grid">
+            <div class="about-text">
+                <h2>Über mich</h2>
+
+                <p>
+                    Vom Bachelor in Mechatronik zur Webentwicklung: Mein Schwerpunkt liegt heute auf
+                    <strong>PHP/Laravel Fullstack-Entwicklung</strong>, Datenmodellen und API-Integrationen.
+                </p>
+
+                <p>
+                    In meiner Arbeit bei der Comvio GmbH und durch eigene Projekte verbinde ich technische
+                    Tiefe mit unternehmerischem Denken.
+                </p>
+
+                <ul class="check-list">
+                    <li>Schnelle Einarbeitung in bestehende Codebasen</li>
+                    <li>Starkes Verständnis für Zahlen, Reporting und Business-Logik</li>
+                    <li>Erfahrung im direkten Kundenkontakt und eigenverantwortlichen Arbeiten</li>
+                </ul>
+            </div>
+
+            <div class="about-image">
+                <img src="img/moritz.jpg" alt="Profilfoto von Moritz Mack">
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="section-white">
+        <div class="container">
+            <h2>Fokus & Tech-Stack</h2>
+
+            <div class="focus-grid">
+                <div class="card focus-card">
+                    <h3>Webanwendungen & Tools</h3>
+                    <p>Planung und Entwicklung von Webapplikationen mit Laravel, Filament und strukturierten Datenmodellen.</p>
+                </div>
+
+                <div class="card focus-card">
+                    <h3>Daten & Auswertung</h3>
+                    <p>SQL-basierte Auswertungen, Reports und Dashboards für Auslastung, Umsatz und Marketing.</p>
+                </div>
+
+                <div class="card focus-card">
+                    <h3>Automation & AI</h3>
+                    <p>Integration von LLMs und Automatisierungen zur Unterstützung von Support und Geschäftsprozessen.</p>
+                </div>
+            </div>
+
+            <div class="tech-stack">
+                <div class="tech-category">
+                    <h4>Backend & Datenbanken</h4>
+                    <p>PHP 8+, Laravel, MySQL, MariaDB, REST APIs, Auth</p>
+                </div>
+
+                <div class="tech-category">
+                    <h4>Frontend</h4>
+                    <p>HTML5, CSS, JavaScript (Vanilla/jQuery), Bootstrap, Blade</p>
+                </div>
+
+                <div class="tech-category">
+                    <h4>Tools & Umgebung</h4>
+                    <p>VS Code, Linux/SSH, Composer, AI-APIs</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="projects">
+        <div class="container">
+            <h2 class="section-title-center">Projekte</h2>
+
+            <div class="projects-grid">
+
+                <div class="card project-card">
+                    <div class="project-info">
+                        <h3>Kapazitäts- & Auslastungs-Dashboard</h3>
+                        <p class="project-context"><strong>Kontext:</strong> Comvio GmbH</p>
+
+                        <p>
+                            Dashboard zur Analyse der Kapazitätsauslastung über Länder, Wochen und Termintypen.
+                            Automatisiert Excel-Auswertungen durch performante Visualisierungen.
+                        </p>
+
+                        <ul>
+                            <li>Berechnungslogiken für Auslastung & Schwellenwerte</li>
+                            <li>Optimierte SQL-Abfragen & Indexe</li>
+                            <li>Interaktive Charts & dynamische Tooltips</li>
+                            <li>Filter nach Zeitraum, Land & Termintyp</li>
+                        </ul>
+
+                        <div class="project-tech">
+                            <span>PHP</span><span>Laravel</span><span>MySQL</span><span>JavaScript</span>
+                            <span>ApexCharts</span><span>Google Sheets API</span>
+                        </div>
+
+                        <p><strong>Ergebnis:</strong> Besseres Marketing- und Auslastungsmonitoring.</p>
+                    </div>
+
+                    <div class="project-image">
+                        <img src="img/yachtauslastung-dashboard.png" alt="Dashboard Screenshot">
+                    </div>
+                </div>
+
+                <div class="card project-card">
+                    <div class="project-info">
+                        <h3>Termin- & Reisesuche</h3>
+                        <p class="project-context"><strong>Kontext:</strong> Comvio GmbH</p>
+
+                        <p>
+                            Weiterentwicklung einer Filtersuche für Segelreisen. Kunden finden passende Termine
+                            nach Zeitraum, Region, Reisetyp und Platzverfügbarkeit.
+                        </p>
+
+                        <ul>
+                            <li>Filterlogiken für Zeitraum, Region, Reisetyp & Plätze</li>
+                            <li>AJAX-Laden & optimierte DB-Abfragen</li>
+                            <li>SEO-freundliche URL-Parameter</li>
+                            <li>Datepicker & responsive Umsetzung</li>
+                        </ul>
+
+                        <div class="project-tech">
+                            <span>PHP</span><span>JavaScript</span><span>jQuery</span>
+                            <span>HTML/CSS</span><span>Bootstrap</span>
+                        </div>
+
+                        <p><strong>Ergebnis:</strong> Mehr Nutzerinteraktionen und Buchungsanfragen.</p>
+                    </div>
+
+                    <div class="project-image">
+                        <img src="img/toernfinder.png" alt="Reisesuche Screenshot">
+                    </div>
+                </div>
+
+                <div class="card project-card">
+                    <div class="project-info">
+                        <h3>KI-Chatbot für Reiseempfehlungen (Prototyp)</h3>
+                        <p class="project-context"><strong>Kontext:</strong> Comvio GmbH</p>
+
+                        <p>
+                            Prototyp eines Chatbots, der Kunden bei der Suche nach Reisen unterstützt.
+                            Nutzt externe AI-APIs zur Auswertung strukturierter Reisedaten.
+                        </p>
+
+                        <ul>
+                            <li>Integration der Elevenlabs API</li>
+                            <li>Datenaufbereitung für den RAG-Index</li>
+                            <li>Konzeption des Chat-Flows</li>
+                            <li>Prompt-Design & Antwortoptimierung</li>
+                        </ul>
+
+                        <div class="project-tech">
+                            <span>PHP</span><span>Laravel</span><span>REST</span>
+                            <span>JavaScript</span><span>AI API</span>
+                        </div>
+
+                        <p><strong>Status:</strong> Weiterentwicklung für Portalintegration.</p>
+                    </div>
+
+                    <div class="project-image">
+                        <img src="img/ki-chatbot.png" alt="KI Chatbot Screenshot">
+                    </div>
+                </div>
+
+                <div class="card project-card">
+                    <div class="project-info">
+                        <h3>Web-App – Wandern & Unterkünfte mit Hund</h3>
+                        <p class="project-context"><strong>Kontext:</strong> Side Project</strong></p>
+
+                        <p>
+                            Webanwendung für hundefreundliche Wanderungen und Unterkünfte.
+                            Nutzer können Touren filtern und passende Orte finden.
+                        </p>
+
+                        <ul>
+                            <li>Datenmodell für Touren, Unterkünfte & Tags</li>
+                            <li>Filter-, Such- & Merkliste-Funktionen</li>
+                            <li>Admin-Bereich für Inhalte</li>
+                        </ul>
+
+                        <div class="project-tech">
+                            <span>Laravel</span><span>SQL</span>
+                            <span>HTML/CSS/JS</span><span>Deployment</span>
+                        </div>
+
+                        <p><strong>Ergebnis:</strong> MVP einer spezialisierten Outdoor-Plattform.</p>
+                    </div>
+
+                    <div class="project-image">
+                        <img src="img/michiapp.png" alt="MichiApp Screenshot">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="section-white">
+        <div class="container grid-2-col">
+
+            <div>
+                <h3>Berufserfahrung</h3>
+
+                <div class="timeline-item">
+                    <span class="date">05/2024 – 11/2025</span>
+                    <h4>Full Stack Developer</h4>
+                    <p class="company">Comvio GmbH, Recklinghausen</p>
+                    <ul>
+                        <li>Entwicklung von Webanwendungen im Kunden- & Backoffice-Bereich</li>
+                        <li>Interaktive Frontends mit Blade, JS & Bootstrap</li>
+                        <li>Datenpipelines & Schnittstellen (z. B. Google Sheets → DB)</li>
+                        <li>Technische Abstimmung mit Management & Kunden</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="date">04/2021 – 08/2022</span>
+                    <h4>Werkstudent Technikberatung</h4>
+                    <p class="company">DTB Deutsche Technikberatung GmbH</p>
+                    <ul>
+                        <li>Technische Kundenberatung & Problemlösung</li>
+                        <li>Dokumentation in Salesforce</li>
+                        <li>Schnittstelle zwischen Kunden & Vertrieb</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="date">08/2020 – 03/2021</span>
+                    <h4>Praxissemester – Planung & Montage</h4>
+                    <p class="company">Neff GmbH, Bretten</p>
+                    <ul>
+                        <li>Analyse von Fertigungsprozessen</li>
+                        <li>Datenauswertung in Excel</li>
+                        <li>Layoutplanung mit AutoCAD & Dokumentation in SAP</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div>
+                <h3>Bildung</h3>
+
+                <div class="timeline-item">
+                    <span class="date">10/2017 – 08/2022</span>
+                    <h4>Bachelor of Engineering · Mechatronik</h4>
+                    <p class="company">Hochschule Pforzheim</p>
+                    <p><strong>Schwerpunkte:</strong> Informatik, Regelungstechnik, Embedded Systems, C/C++, Python.</p>
+                    <p class="thesis">
+                        <strong>Abschlussarbeit:</strong> Entwicklung einer Microcontroller-Programmierumgebung mit Live-Interaktion via Twitch.
+                    </p>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="date">08/2014 – 08/2016</span>
+                    <h4>Informations- & Kommunikationstechnischer Assistent</h4>
+                    <p class="company">Heinrich-Wieland-Schule Pforzheim</p>
+                    <ul>
+                        <li>Fachhochschulreife</li>
+                        <li>Grundlagen IT & Kommunikationstechnik</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section-light">
+        <div class="container">
+            <h3>Unternehmertum & Side Projects</h3>
+
+            <div class="side-projects-grid enhanced-side-projects">
+
+                <div class="side-project-item enhanced-project">
+                    <div class="sp-header">
+                        <h4>Mitgründer einer UG (E-Commerce)</h4>
+                        <span class="sp-date">2023 – 2025</span>
+                    </div>
+                    <p>
+                        Aufbau einer Produktmarke im Duftbereich. Verantwortung für Webauftritt,
+                        Produktdarstellung, Amazon-Optimierung und einfache Prozessautomatisierungen.
+                    </p>
+                </div>
+
+                <div class="side-project-item enhanced-project">
+                    <div class="sp-header">
+                        <h4>DogMatchAI – Mobile App (Android)</h4>
+                        <span class="sp-date">2023</span>
+                    </div>
+                    <p>
+                        App, die durch Farberkennung und Musteranalyse Hundemerkmale aus Bildern ableitet
+                        und passende Rassen vorschlägt. Entwickelt als leichtgewichtiger KI-Experimentansatz.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section-dark">
+        <div class="container contact-content">
+            <h2>Lass uns sprechen</h2>
+            <p>Ich suche neue Herausforderungen in der PHP/Laravel-Entwicklung.</p>
+
+            <div class="contact-details">
+                <a href="mailto:moritzmack@gmx.de" class="contact-link">📧 moritzmack@gmx.de</a>
+                <span class="location">📍 Engelsbrand, Deutschland</span>
+            </div>
+
+            <div class="contact-actions">
+                <a href="mailto:moritzmack@gmx.de" class="btn btn-primary">E-Mail schreiben</a>
+                <a href="Lebenslauf.pdf" class="btn btn-outline-light" target="_blank">Lebenslauf (PDF)</a>
+            </div>
+
+            <footer class="footer">
+                <p>&copy; 2025 Moritz Mack. Alle Rechte vorbehalten.</p>
+                <div class="legal-links">
+                    <a href="impressum.html">Impressum</a>
+                    <a href="datenschutz.html">Datenschutz</a>
+                </div>
+            </footer>
+        </div>
+    </section>
+
+    <div id="image-lightbox" class="image-lightbox">
+        <div class="image-lightbox-backdrop"></div>
+        <div class="image-lightbox-content">
+            <img id="lightbox-img" src="" alt="Großansicht">
+            <button class="image-lightbox-close" aria-label="Schließen">&times;</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
