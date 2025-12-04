@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Kapazitätsauslastung – Beispiel-Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Optionale Webfont -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Google Charts -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <style>
+    :root {
+      --bg: #f3f4f6;
+      --bg-card: #ffffff;
+      --border-subtle: #e5e7eb;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --accent: #2563eb;
+      --accent-soft: #dbeafe;
+      --danger: #dc2626;
+      --warning: #d97706;
+      --success: #16a34a;
+      --shadow-soft: 0 12px 30px rgba(15, 23, 42, 0.08);
+      --radius-lg: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 32px;
+      background: radial-gradient(circle at top left, #e0f2fe 0, #f9fafb 40%, #e5e7eb 100%);
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text-main);
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.9);
+      padding: 24px 28px 26px;
+      border-radius: 24px;
+      box-shadow: 0 22px 60px rgba(15,23,42,0.15);
+      border: 1px solid rgba(148,163,184,0.25);
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34,197,94,0.2);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+    }
+
+    .header-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .header-right {
+      text-align: right;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .header-right span {
+      display: block;
+    }
+
+    /* Filter-Bereich */
+    .filter-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px 12px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 20px;
+    }
+
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px 24px;
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+    }
+
+    .filter-label {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .year-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+    }
+
+    .year-btn {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: default;
+      background: #e5e7eb;
+      color: #4b5563;
+    }
+
+    .year-value {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    select, input[type="date"], input[type="text"] {
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      padding: 4px 10px;
+      font-size: 12px;
+      min-width: 140px;
+      background: #f9fafb;
+    }
+
+    /* Toggle / Switch */
+    .switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .switch-label {
+      white-space: nowrap;
+      font-weight: 500;
+    }
+
+    .switch-input {
+      position: relative;
+      width: 32px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .switch-input input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: default;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #e5e7eb;
+      transition: 0.2s;
+      border-radius: 999px;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      height: 14px;
+      width: 14px;
+      left: 2px;
+      top: 2px;
+      background-color: white;
+      transition: 0.2s;
+      border-radius: 50%;
+      box-shadow: 0 1px 2px rgba(15,23,42,0.4);
+    }
+
+    .switch-input input:checked + .slider {
+      background-color: var(--accent);
+    }
+
+    .switch-input input:checked + .slider::before {
+      transform: translateX(14px);
+    }
+
+    /* KPI-Zeile */
+    .kpi-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .kpi-card {
+      flex: 1 1 140px;
+      min-width: 140px;
+      background: var(--bg-card);
+      border-radius: 14px;
+      padding: 10px 12px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 8px 22px rgba(15,23,42,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 12px;
+    }
+
+    .kpi-label {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .kpi-value {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .kpi-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .pill-green {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .pill-amber {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .pill-red {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    /* Main Content */
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    .tile {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      font-size: 13px;
+    }
+
+    .tile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    .tile-title {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .tile-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    th, td {
+      padding: 4px 0;
+    }
+
+    th {
+      text-align: right;
+      border-bottom: 1px solid #e5e7eb;
+      font-weight: 600;
+      color: #4b5563;
+    }
+
+    th:first-child,
+    td:first-child {
+      text-align: left;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #f9fafb;
+    }
+
+    .cell-red {
+      color: var(--danger);
+      text-align: right;
+    }
+
+    .cell-amber {
+      color: var(--warning);
+      text-align: right;
+    }
+
+    .cell-green {
+      color: var(--success);
+      text-align: right;
+    }
+
+    .top3 {
+      margin-top: 12px;
+      font-size: 12px;
+    }
+
+    .top3-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .top3 a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .top3 a:hover {
+      text-decoration: underline;
+    }
+
+    .hint {
+      margin-top: 14px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <span class="badge">
+        <span class="badge-dot"></span>
+        Beispiel-Ansicht
+      </span>
+      <h1>Kapazitätsauslastung – Dashboard (Demo)</h1>
+      <div class="header-sub">
+        Visualisierung eines fiktiven Auslastungs-Dashboards mit Filtern, KPIs und Wochenübersicht.
+      </div>
+    </div>
+    <div class="header-right">
+      <span>Zeitraum (Beispiel): <strong>01.04.2025 – 30.09.2025</strong></span>
+      <span>Ansicht: <strong>Pro Woche &amp; Region</strong></span>
+    </div>
+  </div>
+
+  <!-- Filter -->
+  <div class="filter-card">
+    <form id="headerform">
+      <div class="filter-row">
+        <!-- Jahr -->
+        <div class="filter-group">
+          <span class="filter-label">Jahr:</span>
+          <div class="year-nav">
+            <button type="button" class="year-btn">&#8249;</button>
+            <span class="year-value">2025</span>
+            <button type="button" class="year-btn">&#8250;</button>
+          </div>
+        </div>
+
+        <!-- Region -->
+        <div class="filter-group">
+          <span class="filter-label">Region:</span>
+          <select name="region">
+            <option>Alle Regionen</option>
+            <option selected>Region Nord</option>
+            <option>Region Süd</option>
+            <option>Region West</option>
+            <option>Region Ost</option>
+          </select>
+        </div>
+
+        <!-- Zeitraum -->
+        <div class="filter-group">
+          <span class="filter-label">Zeitraum:</span>
+          <input type="date" value="2025-06-01">
+          <span style="font-size:11px; color:#9ca3af;">bis</span>
+          <input type="date" value="2025-09-30">
+        </div>
+
+        <!-- Switches -->
+        <div class="filter-group">
+          <label class="switch">
+            <span class="switch-label">Nur aktive Einheiten</span>
+            <span class="switch-input">
+              <input type="checkbox" checked>
+              <span class="slider"></span>
+            </span>
+          </label>
+        </div>
+
+        <div class="filter-group">
+          <label class="switch">
+            <span class="switch-label">Spezialfälle ausblenden</span>
+            <span class="switch-input">
+              <input type="checkbox">
+              <span class="slider"></span>
+            </span>
+          </label>
+        </div>
+
+        <div class="filter-group">
+          <label class="switch">
+            <span class="switch-label">Prozentuale Ansicht</span>
+            <span class="switch-input">
+              <input type="checkbox" checked>
+              <span class="slider"></span>
+            </span>
+          </label>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">Durchschnittliche Auslastung</div>
+      <div class="kpi-value">84&nbsp;%</div>
+      <span class="kpi-pill pill-green">+6&nbsp;pp vs. Referenz</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Freie Kapazitäten (Zeitraum)</div>
+      <div class="kpi-value">312</div>
+      <span class="kpi-pill pill-amber">Fokus auf Verteilung</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Einheiten unter Zielauslastung</div>
+      <div class="kpi-value">27</div>
+      <span class="kpi-pill pill-red">Optimierungspotenzial</span>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Einheiten voll ausgelastet</div>
+      <div class="kpi-value">54</div>
+      <span class="kpi-pill pill-green">Stabile Auslastung</span>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="grid">
+    <!-- Linke Seite: Tabelle + Top 3 -->
+    <div class="tile">
+      <div class="tile-header">
+        <div>
+          <div class="tile-title">Region Nord – Wochenübersicht (Demo)</div>
+          <div class="tile-subtitle">Fiktive Auslastungsdaten pro Kalenderwoche</div>
+        </div>
+        <div style="font-size:11px; color:var(--text-muted);">
+          KW-Basis<br>Samstag – Freitag
+        </div>
+      </div>
+
+      <table>
+        <thead>
+        <tr>
+          <th>KW</th>
+          <th style="text-align:right;">Unter Ziel</th>
+          <th style="text-align:right;">Im Zielbereich</th>
+          <th style="text-align:right;">Voll ausgelastet</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>23: 01.06.</td>
+          <td class="cell-red">4</td>
+          <td class="cell-amber">3</td>
+          <td class="cell-green">6</td>
+        </tr>
+        <tr>
+          <td>24: 08.06.</td>
+          <td class="cell-red">6</td>
+          <td class="cell-amber">2</td>
+          <td class="cell-green">5</td>
+        </tr>
+        <tr>
+          <td>25: 15.06.</td>
+          <td class="cell-red">5</td>
+          <td class="cell-amber">4</td>
+          <td class="cell-green">7</td>
+        </tr>
+        <tr>
+          <td>26: 22.06.</td>
+          <td class="cell-red">3</td>
+          <td class="cell-amber">5</td>
+          <td class="cell-green">8</td>
+        </tr>
+        <tr>
+          <td>27: 29.06.</td>
+          <td class="cell-red">2</td>
+          <td class="cell-amber">4</td>
+          <td class="cell-green">9</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <div class="top3">
+        <div class="top3-title">Top 3 Einheiten mit den meisten freien Kapazitäten (Zeitraum, Demo)</div>
+        <div>&middot; <a href="#">Team Alpha (Region Nord, Standort A)</a> – 9 freie Slots</div>
+        <div>&middot; <a href="#">Team Beta (Region Nord, Standort B)</a> – 7 freie Slots</div>
+        <div>&middot; <a href="#">Team Gamma (Region Nord, Standort C)</a> – 6 freie Slots</div>
+      </div>
+
+      <div class="hint">
+        Hinweis: Alle Werte und Bezeichnungen sind fiktiv und dienen ausschließlich der Visualisierung des Konzepts.
+      </div>
+    </div>
+
+    <!-- Rechte Seite: Google Chart Auslastung nach Region -->
+    <div class="tile">
+      <div class="tile-header">
+        <div>
+          <div class="tile-title">Auslastung nach Region (Demo)</div>
+          <div class="tile-subtitle">Aggregierte Auslastung pro Region im gewählten Zeitraum</div>
+        </div>
+        <div style="font-size:11px; color:var(--text-muted);">
+          Einheit: Auslastungsquote in %
+        </div>
+      </div>
+
+      <!-- Google Chart Container -->
+      <div id="region_chart" style="width: 100%; height: 260px;"></div>
+
+      <div class="hint">
+        Diese Darstellung zeigt ein Beispiel für die Integration der Google Charts API in ein Auswertungs-Dashboard
+        (statische Demodaten, keine Verbindung zu realen Systemen).
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  // Google Charts initialisieren
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawRegionChart);
+
+  function drawRegionChart() {
+    // Demodaten
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Region');
+    data.addColumn('number', 'Auslastung in %');
+
+    data.addRows([
+      ['Region Nord', 82],
+      ['Region Süd', 76],
+      ['Region West', 68],
+      ['Region Ost', 74]
+    ]);
+
+    var options = {
+      legend: { position: 'none' },
+      chartArea: { left: 60, top: 20, width: '80%', height: '70%' },
+      hAxis: {
+        minValue: 0,
+        maxValue: 100,
+        format: '#\'%\''
+      },
+      vAxis: {
+        textStyle: { fontSize: 11 }
+      },
+      bar: { groupWidth: '55%' },
+      colors: ['#2563eb'],
+      backgroundColor: 'transparent'
+    };
+
+    // Horizontal BarChart, passt gut ins Kachel-Layout
+    var chart = new google.visualization.BarChart(document.getElementById('region_chart'));
+    chart.draw(data, options);
+  }
+</script>
+</body>
+</html>

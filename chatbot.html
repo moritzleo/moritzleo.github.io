@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Törnberater – UI Mockup (Light)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #0d9488;
+            --primary-soft: #e6f6f4;
+            --primary-border: #c7ece7;
+
+            --bg: #f8fafc;
+            --card: #ffffff;
+
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', sans-serif;
+            padding: 40px;
+        }
+
+        .chat-frame {
+            width: 900px;
+            background: var(--card);
+            border-radius: 22px;
+            border: 1px solid var(--border);
+            padding: 24px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .chat-header-left {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .bot-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 999px;
+            background: var(--primary-soft);
+            border: 1px solid var(--primary-border);
+            color: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .bot-meta-title { font-size: 1rem; font-weight: 600; color: var(--text); }
+        .bot-meta-sub   { font-size: 0.8rem; color: var(--text-muted); }
+
+        .chat-status-dot {
+            width: 10px; height: 10px;
+            border-radius: 999px;
+            background: #10b981;
+            box-shadow: 0 0 0 4px rgba(16,185,129,0.2);
+        }
+
+        .chat-main {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .chat-tags {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .chat-tag {
+            padding: 4px 10px;
+            background: var(--primary-soft);
+            border: 1px solid var(--primary-border);
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 500;
+            border-radius: 999px;
+        }
+
+        .chat-messages {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .msg-row { display: flex; }
+        .msg-row.user { justify-content: flex-end; }
+
+        .msg-bubble {
+            max-width: 70%;
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            line-height: 1.45;
+        }
+
+        .msg-bubble.bot {
+            background: #f1f5f9;
+            border: 1px solid #d0d7e0;
+            color: var(--text);
+            border-top-left-radius: 4px;
+        }
+
+        .msg-bubble.user {
+            background: var(--primary-soft);
+            border: 1px solid var(--primary-border);
+            color: var(--text);
+            border-bottom-right-radius: 4px;
+        }
+
+        .msg-meta {
+            margin-top: 4px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .inline-pill {
+            display: inline-flex;
+            gap: 6px;
+            padding: 3px 8px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 10px;
+        }
+
+        .inline-pill-dot {
+            width: 6px;
+            height: 6px;
+            background: #10b981;
+            border-radius: 50%;
+        }
+
+        .chat-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .chat-suggestion-chip {
+            padding: 6px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: #f8fafc;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .chat-input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-top: 1px solid var(--border);
+            padding-top: 12px;
+        }
+
+        .input-shell {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: #ffffff;
+        }
+
+        .input-shell input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .btn-send {
+            padding: 8px 16px;
+            border-radius: 999px;
+            border: none;
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="chat-frame">
+
+    <div class="chat-header">
+        <div class="chat-header-left">
+            <div class="bot-avatar">AI</div>
+            <div>
+                <div class="bot-meta-title">Törn-Berater</div>
+                <div class="bot-meta-sub">Hilft bei Reisezielen & verfügbaren Terminen</div>
+            </div>
+        </div>
+        <div class="chat-status-dot"></div>
+    </div>
+
+    <div class="chat-main">
+
+        <div class="chat-tags">
+            <span class="chat-tag">Reiseplanung</span>
+            <span class="chat-tag">Törnsuche</span>
+            <span class="chat-tag">Verfügbarkeit</span>
+        </div>
+
+        <div class="chat-messages">
+
+            <!-- USER -->
+            <div class="msg-row user">
+                <div>
+                    <div class="msg-bubble user">
+                        Ich suche einen ruhigen Törn im Spätsommer. Welche Regionen wären geeignet?
+                    </div>
+                    <div class="msg-meta">Du · 11:04</div>
+                </div>
+            </div>
+
+            <!-- AI -->
+            <div class="msg-row">
+                <div>
+                    <div class="msg-bubble bot">
+                        Für Spätsommer-Törns eignen sich besonders Regionen mit stabiler Wetterlage 
+                        und moderater Nachfrage. Beliebte Optionen sind:
+                        <br><br>
+                        • sonnige Küsten mit leichten Winden<br>
+                        • ruhige Buchten und entspannte Routen<br>
+                        • gute Verfügbarkeit ab Mitte September
+                        <br><br>
+                        Möchtest du, dass ich dir passende Termine in diesem Zeitraum heraussuche?
+                        <div class="inline-pill">
+                            <div class="inline-pill-dot"></div>
+                            Empfehlungen basieren auf typischen Saisonmustern
+                        </div>
+                    </div>
+                    <div class="msg-meta">Bot · 11:05</div>
+                </div>
+            </div>
+
+            <!-- USER -->
+            <div class="msg-row user">
+                <div>
+                    <div class="msg-bubble user">
+                        Ja bitte, zeig mir verfügbare Wochen im September.
+                    </div>
+                    <div class="msg-meta">Du · 11:06</div>
+                </div>
+            </div>
+
+            <!-- AI -->
+            <div class="msg-row">
+                <div>
+                    <div class="msg-bubble bot">
+                        Im September gibt es noch mehrere freie Wochen. Die meisten Routen haben 
+                        flexible Starttermine. 
+                        <br><br>
+                        Wenn du möchtest, stelle ich dir eine kurze Übersicht zusammen.
+                    </div>
+                    <div class="msg-meta">Bot · tippt …</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="chat-suggestions">
+            <div class="chat-suggestion-chip">📅 Übersicht September anzeigen</div>
+            <div class="chat-suggestion-chip">🌤 Wettertrends prüfen</div>
+            <div class="chat-suggestion-chip">⚓ Routenvorschläge</div>
+        </div>
+
+        <div class="chat-input-row">
+            <div class="input-shell">
+                <input type="text" placeholder="Frage den AI-Berater …" disabled>
+            </div>
+            <button class="btn-send">Senden</button>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

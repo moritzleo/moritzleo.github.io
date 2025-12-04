@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Terminfinder – Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: "Inter", system-ui, sans-serif;
+            background: linear-gradient(180deg, #f3f4f7 0%, #eceef1 100%);
+            color: #1b1b1b;
+        }
+
+        /* Seite enger & cleaner */
+        .trip-finder {
+            padding: 40px 16px 80px;
+        }
+
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin: 0 0 12px;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            margin-bottom: 32px;
+            color: #6b6f76;
+            font-size: 15px;
+        }
+
+        .filters {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            padding: 24px 28px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.06);
+
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 24px;
+        }
+
+        .filters .field label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #4b4f56;
+        }
+
+        /* Inputs */
+        .filters input,
+        .filters select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid #d3d5da;
+            background: #fafafa;
+            font-size: 14px;
+        }
+
+        .filters input:focus,
+        .filters select:focus {
+            outline: none;
+            border-color: #ee8434;
+            box-shadow: 0 0 0 2px rgba(238,132,52,0.2);
+        }
+
+        /* Checkbox */
+        .filters .checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 4px;
+            color: #4b4f56;
+        }
+
+        .filters .checkbox input {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Responsive Filter */
+        @media (max-width: 768px) {
+            .filters {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .triplist {
+            margin-top: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Animation */
+        @keyframes flyin {
+            0% { transform: translateY(16px) scale(0.98); opacity: 0; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        /* Card */
+        .trip-card {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 24px 28px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+            animation: flyin .35s ease;
+            display: grid;
+            grid-template-columns: 2fr 3fr auto;
+            gap: 24px;
+            align-items: center;
+        }
+
+        @media (max-width: 900px) {
+            .trip-card {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .trip-card .head .date {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1b1b1b;
+        }
+
+        .badge {
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        /* Neue frische Farben für Badges */
+        .badge.type-training {
+            background: #ffe3cc;
+            color: #c45a00;
+        }
+
+        .badge.type-urlaub {
+            background: #d6f8f5;
+            color: #0f5f56;
+        }
+
+        .badge.type-meilentörn {
+            background: #e1e1ff;
+            color: #2f2fa8;
+        }
+
+        .trip-card .body {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 12px 24px;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .trip-card h3 {
+            margin: 0;
+            font-size: 17px;
+            font-weight: 600;
+            color: #1b1b1b;
+        }
+
+        .trip-card p {
+            margin: 0;
+            color: #6b6f76;
+            font-size: 13px;
+        }
+
+        .price {
+            text-align: right;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1c748b;
+        }
+
+        .status {
+            font-size: 14px;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .status.available {
+            color: #0ba15d;
+        }
+
+        .status.full {
+            color: #d34a4a;
+        }
+
+        .trip-card .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .trip-card button {
+            border-radius: 12px;
+            border: 1px solid #ee8434;
+            background: #ee8434;
+            padding: 10px 22px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .trip-card button:hover {
+            background: #f3924a;
+            box-shadow: 0 6px 18px rgba(238,132,52,0.4);
+            transform: translateY(-2px);
+        }
+
+        .trip-card button.secondary {
+            background: #fff;
+            color: #ee8434;
+        }
+
+        .trip-card button.secondary:hover {
+            background: #ffe9dd;
+        }
+
+        /* Kleine Info */
+        .meta-info {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #8b8f96;
+        }
+
+        [data-tooltip] {
+            position: relative;
+        }
+
+        [data-tooltip]:hover:after {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        [data-tooltip]:after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%) translateY(6px);
+            background: rgba(0, 0, 0, 0.72);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 10px;
+            white-space: nowrap;
+            font-size: 12px;
+            opacity: 0;
+            visibility: hidden;
+            transition: .2s ease;
+            pointer-events: none;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="trip-finder">
+    <div class="wrapper">
+        <h1>Terminfinder – Demo</h1>
+        <p class="subtitle">
+            Vereinfachte Darstellung eines internen Terminfinders mit Filterlogik und Ergebnisliste.
+        </p>
+
+        <!-- Filterbereich -->
+        <div class="filters">
+            <div class="field">
+                <label for="filter-text">Zeitraum / Suche</label>
+                <input id="filter-text" type="text" placeholder="z. B. 'Mai', 'Adria', '2025'">
+            </div>
+
+            <div class="field">
+                <label for="filter-region">Revier</label>
+                <select style="margin-left:12.5px" id="filter-region">
+                    <option value="">Alle Reviere</option>
+                    <option value="Adria">Adria</option>
+                    <option value="Ägäis">Ägäis</option>
+                    <option value="Nordsee">Nordsee</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="filter-type">Törntyp</label>
+                <select id="filter-type">
+                    <option value="">Alle Typen</option>
+                    <option value="Training">Trainingstörn</option>
+                    <option value="Urlaub">Urlaubstörn</option>
+                    <option value="Meilentörn">Meilentörn</option>
+                </select>
+            </div>
+
+            <div class="field" style="grid-column: 1 / -1;">
+                <label class="checkbox">
+                    <input type="checkbox" id="filter-available">
+                    <span>Nur verfügbare Termine anzeigen</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Ergebnisliste -->
+        <div id="triplist" class="triplist"></div>
+
+        <div class="meta-info">
+            Demo-Funktionalität: Filter wirken clientseitig auf eine kleine, statische Datengrundlage. Alle Daten sind anonymisiert und dienen nur der Veranschaulichung.
+        </div>
+    </div>
+</div>
+
+<script>
+    // Demo-Daten (statisch & anonym)
+    const trips = [
+        {
+            id: 1,
+            from: "03.05.2025",
+            to: "10.05.2025",
+            region: "Adria",
+            title: "Adria – Inselhüpfen ab Marina Süd",
+            type: "Urlaub",
+            typeLabel: "Urlaubstörn",
+            price: "ab 890 € p. P.",
+            available: true
+        },
+        {
+            id: 2,
+            from: "17.05.2025",
+            to: "24.05.2025",
+            region: "Ägäis",
+            title: "Ägäis – Meilen- & Manövertraining",
+            type: "Training",
+            typeLabel: "Trainingstörn",
+            price: "ab 950 € p. P.",
+            available: true
+        },
+        {
+            id: 3,
+            from: "31.05.2025",
+            to: "07.06.2025",
+            region: "Nordsee",
+            title: "Nordsee – Tidenrevier kompakt",
+            type: "Meilentörn",
+            typeLabel: "Meilentörn",
+            price: "ab 1.050 € p. P.",
+            available: false
+        },
+        {
+            id: 4,
+            from: "14.06.2025",
+            to: "21.06.2025",
+            region: "Adria",
+            title: "Adria – Einsteiger & Freundescrews",
+            type: "Urlaub",
+            typeLabel: "Urlaubstörn",
+            price: "ab 820 € p. P.",
+            available: false
+        }
+    ];
+
+    const triplistEl = document.getElementById('triplist');
+    const filterTextEl = document.getElementById('filter-text');
+    const filterRegionEl = document.getElementById('filter-region');
+    const filterTypeEl = document.getElementById('filter-type');
+    const filterAvailableEl = document.getElementById('filter-available');
+
+    function renderTrips(list) {
+        triplistEl.innerHTML = '';
+
+        if (!list.length) {
+            const msg = document.createElement('div');
+            msg.className = 'triplist empty-message';
+            msg.textContent = 'Keine Termine gefunden. Filter bitte anpassen.';
+            triplistEl.appendChild(msg);
+            return;
+        }
+
+        list.forEach(trip => {
+            const article = document.createElement('article');
+            article.className = 'trip-card';
+
+            // Kopfbereich
+            const head = document.createElement('div');
+            head.className = 'head';
+
+            const date = document.createElement('div');
+            date.className = 'date';
+            date.textContent = `${trip.from} – ${trip.to}`;
+
+            const badge = document.createElement('div');
+            badge.className = 'badge ' + (trip.type === 'Training'
+                ? 'type-training'
+                : trip.type === 'Urlaub'
+                    ? 'type-urlaub'
+                    : 'type-meilentörn');
+            badge.textContent = trip.typeLabel;
+
+            head.appendChild(date);
+            head.appendChild(badge);
+
+            // Body
+            const body = document.createElement('div');
+            body.className = 'body';
+
+            const title = document.createElement('h3');
+            title.setAttribute('data-tooltip', trip.title);
+            title.textContent = trip.title;
+
+            const region = document.createElement('p');
+            region.textContent = trip.region;
+
+            const price = document.createElement('div');
+            price.className = 'price';
+            price.textContent = trip.price;
+
+            const status = document.createElement('div');
+            status.className = 'status ' + (trip.available ? 'available' : 'full');
+            status.textContent = trip.available ? 'Verfügbar' : 'Ausgebucht';
+
+            body.appendChild(title);
+            body.appendChild(region);
+            body.appendChild(price);
+            body.appendChild(status);
+
+            // Aktionen
+            const actions = document.createElement('div');
+            actions.className = 'actions';
+
+            const btn = document.createElement('button');
+            if (trip.available) {
+                btn.textContent = 'Buchen';
+            } else {
+                btn.textContent = 'Anfragen';
+                btn.classList.add('secondary');
+            }
+
+            const smallInfo = document.createElement('small');
+            smallInfo.style.fontSize = '11px';
+            smallInfo.style.color = '#888';
+            smallInfo.textContent = '';
+
+            actions.appendChild(btn);
+            actions.appendChild(smallInfo);
+
+            article.appendChild(head);
+            article.appendChild(body);
+            article.appendChild(actions);
+
+            triplistEl.appendChild(article);
+        });
+    }
+
+    function applyFilters() {
+        const text = filterTextEl.value.trim().toLowerCase();
+        const region = filterRegionEl.value;
+        const type = filterTypeEl.value;
+        const onlyAvailable = filterAvailableEl.checked;
+
+        const filtered = trips.filter(trip => {
+            if (region && trip.region !== region) return false;
+            if (type && trip.type !== type) return false;
+            if (onlyAvailable && !trip.available) return false;
+
+            if (text) {
+                const haystack = (trip.title + ' ' + trip.region + ' ' + trip.from + ' ' + trip.to)
+                    .toLowerCase();
+                if (!haystack.includes(text)) return false;
+            }
+
+            return true;
+        });
+
+        renderTrips(filtered);
+    }
+
+    filterTextEl.addEventListener('input', applyFilters);
+    filterRegionEl.addEventListener('change', applyFilters);
+    filterTypeEl.addEventListener('change', applyFilters);
+    filterAvailableEl.addEventListener('change', applyFilters);
+
+    // Initiales Rendering
+    renderTrips(trips);
+</script>
+
+</body>
+</html>
